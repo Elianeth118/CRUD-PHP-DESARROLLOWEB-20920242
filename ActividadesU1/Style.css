@@ -1,0 +1,53 @@
+table {
+    table-layout: fixed;
+    width: 50%;
+    border-collapse: collapse;
+    border: 3px solid purple;
+    display: grid;
+    place-content: center;
+    margin: 0 auto;
+    border: 1px;
+   
+  }
+  table:hover{-webkit-transform:scale(1.1);transform:scale(1.1);}
+table {overflow:hidden;}
+table:hover  {-webkit-transform:scale(1).1;transform:scale(1.1);}
+table {overflow:hidden;}
+  .enca{
+    background-color: rgb(213, 169, 213);
+    border: 3px solid purple;
+  }
+  .dias{
+    background-color: rgb(157, 114, 157);
+   
+  }
+  .hora{
+    background-color: rgb(213, 169, 213);
+    
+  }
+  .TI{
+    background-color: rgb(134, 191, 237);
+    border: 3px solid purple;
+
+  }
+  .CD{
+    background-color: rgb(216, 223, 158);
+    border: 3px solid purple;
+    
+  }
+  .SW{
+    background-color: rgb(241, 138, 239);
+    border: 3px solid purple;
+  }
+  .DW{
+    background-color: rgb(159, 151, 231);
+    border: 3px solid purple;
+  }
+  .AM{
+    background-color: rgb(186, 248, 237);
+    border: 3px solid purple;
+  }
+  .front{
+    background-color: rgb(224, 169, 117);
+    border: 3px solid purple;
+  }
