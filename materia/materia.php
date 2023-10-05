@@ -1,22 +1,23 @@
 <?php
 require_once('../CONEXION.php');
+require_once('claseMateria.php');
 include('index.html');
 
 $conecta = new conexion('localhost', 'root', '', 'itvo2');
 $conecta->conectar();
-
-$datos = $conecta->listar('materia');
+$objMateria=new materia($conecta->get_conn());
+$datos =$objMateria->listar('materia');
 
 // Cambiar estado (activo o inactivo)
 if (isset($_GET["cambiarEstado"]) && is_numeric($_GET["cambiarEstado"])) {
     $idCambiarEstado = $_GET["cambiarEstado"];
     
-    if ($conecta->cambiarEstadoMateria('materia', $idCambiarEstado)) {
+    if ($objMateria->cambiarEstadoMateria('materia', $idCambiarEstado)) {
         echo "Estado de la materia actualizado con éxito.";
     } else {
         echo "Error al actualizar el estado de la materia";
     }
-    $datos = $conecta->listar('materia');
+    $datos = $objMateria->listar('materia');
 }
 
 //insertar o editar
@@ -27,7 +28,7 @@ $claveEditar = "";
 
 if (isset($_GET["idEditar"]) && is_numeric($_GET["idEditar"])) {
     $idEditar = $_GET["idEditar"];
-    $datosEditar = $conecta->obtenerDatosMateria("materia", $idEditar);
+    $datosEditar = $objMateria->obtenerDatosMateria("materia", $idEditar);
 
  
     if ($datosEditar) {
@@ -48,10 +49,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idEditar = $_POST["idEditar"];
 
     if (empty($idEditar)) {
-        $conecta->insertarMateria($nomMateria,$creditos,$semestre,$clave);
-        $datos = $conecta->listar('materia');
+        $objMateria->insertarMateria($nomMateria,$creditos,$semestre,$clave);
+        $datos = $objMateria->listar('materia');
     } else {
-        $datosEditar = $conecta->obtenerDatosMateria("materia", $idEditar);
+        $datosEditar = $objMateria->obtenerDatosMateria("materia", $idEditar);
 
         if ($datosEditar) {
             $nomMateriaEditar = $datosEditar['nomMateria'];
@@ -61,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            
         }
 
-        $conecta->editarMateria("materia", $idEditar, $nomMateria,$creditos,$semestre,$clave);
+        $objMateria->editarMateria("materia", $idEditar, $nomMateria,$creditos,$semestre,$clave);
 
         $nomMateriaEditar = "";
         $creditosEditar = "";
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      
     }
 
-    $datos = $conecta->listar('materia');
+    $datos = $objMateria->listar('materia');
 }
 ?>
 
