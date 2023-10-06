@@ -61,26 +61,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div class="container text-center">
-    <form class="mw-md-xl mx-auto mt-4"  action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-        <div class="row align-items-center">
-            <div class="col-5">
+<div class="mt-3"></div>
+<div class="container">
+    <div class="row justify-content-center">
+    <div class="col-md-6 mt-3">
+    <form  action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
                 <input type="hidden" name="idEditar" value="<?php echo isset($_GET['idEditar']) ? $_GET['idEditar'] : ''; ?>">
+                <div class="form-group">
                 <label  for="nomDocente">Nombre Docente:</label>
                 <input type="text" name="nomDocente" required class="form-control " value="<?php echo $nomDocenteEditar; ?>" ><br><br>
-
+                </div>
+                <div class="form-group text-center mt-3">
                 <input type="submit" value="Insertar" class="btn btn-outline-primary">
             </div>
-        </div>
     </form>
-    <br></br>
-
-    <table  class="table table-primary table-striped table-hover">
-        <tr>
-            <th>Nombre Carrera</th>
-            <th>Estado</th>
-            <th colspan=2 >Acción:</th>
-        </tr>
+    <div class="mt-3"></div>
+    </div>
+    </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Nombre Carrera</th>
+                            <th>Estado</th>
+                            <th colspan=2 >Acción:</th>
+                </tr>
+                </thead>
+        <tbody>
         <?php
         if($datos->num_rows > 0){
             while($tupla = $datos->fetch_assoc()){
@@ -96,7 +106,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         ?>
-    </table>
+         </tbody>
+         </table>
+        </div>
+        </div>
+    </div>
 </div>
+  
+   +
 </body>
 </html>

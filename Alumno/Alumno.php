@@ -83,78 +83,102 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
-<div class="container text-center">
-    <form class="mw-md-xl mx-auto mt-3"  action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-        <div class="row align-items-center">
-            <div class="col-5">
+<div class="mt-3"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 mt-3">
+            <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
                 <input type="hidden" name="idEditar" value="<?php echo isset($_GET['idEditar']) ? $_GET['idEditar'] : ''; ?>">
-                <label  for="Nombre">Nombre:</label>
-                <input type="text" name="Nombre" required class="form-control " value="<?php echo $nombreEditar; ?>" ><br><br>
-
-                <label for="Edad">Edad:</label>
-                <input type="text" name="Edad" required class="form-control" value="<?php echo $edadEditar; ?>" ><br><br>
-
-                <label for="Grupo">Grupo:</label>
-                <input type="text" name="Grupo" required class="form-control" value="<?php echo $grupoEditar; ?>" ><br><br>
-                <label for="Carrera">Carrera:</label>
-<select name="idCarrera" required class="form-control">
-    <option value="">Seleccione una carrera</option>
-    <?php
-    $carreras = $objAlumno->listar('carrera');
-    while ($carrera = $carreras->fetch_assoc()) {
-        $selected = ($carrera['idCarrera'] == $idCarreraEditar) ? "selected" : "";
-        echo "<option value='{$carrera['idCarrera']}' $selected>{$carrera['nomCarrera']}</option>";
-    }
-    ?>
-</select><br><br>
-
+                <div class="form-group">
+                    <label for="Nombre">Nombre:</label>
+                    <input type="text" name="Nombre" required class="form-control" value="<?php echo $nombreEditar; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="Edad">Edad:</label>
+                    <input type="text" name="Edad" required class="form-control" value="<?php echo $edadEditar; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="Grupo">Grupo:</label>
+                    <input type="text" name="Grupo" required class="form-control" value="<?php echo $grupoEditar; ?>">
+                </div>
+                <div class="form-group">
+                    <label for="Carrera">Carrera:</label>
+                    <select name="idCarrera" required class="form-control">
+                        <option value="">Seleccione una carrera</option>
+                        <?php
+                        $carreras = $objAlumno->listar('carrera');
+                        while ($carrera = $carreras->fetch_assoc()) {
+                            $selected = ($carrera['idCarrera'] == $idCarreraEditar) ? "selected" : "";
+                            echo "<option value='{$carrera['idCarrera']}' $selected>{$carrera['nomCarrera']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group text-center mt-3">
                 <input type="submit" value="Insertar" class="btn btn-outline-primary">
+                </div>
+            </form>
+            <div class="mt-3"></div>
+        </div>
+    </div>
+</div>
+<br>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Edad</th>
+                            <th>Grupo</th>
+                            <th>Carrera</th>
+                            <th>Estado</th>
+                            <th colspan="2">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($datos->num_rows > 0) {
+                            while($tupla = $datos->fetch_assoc()){
+                                $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
+                                $carreraNombre = ""; // Variable para almacenar el nombre de la carrera
+                                // Obtener el nombre de la carrera asociada al ID
+                                $carreras = $objAlumno->listar('carrera');
+                                while ($carrera = $carreras->fetch_assoc()) {
+                                    if ($carrera['idCarrera'] == $tupla['idCarrera']) {
+                                        $carreraNombre = $carrera['nomCarrera'];
+                                        break;
+                          
+                                }
+                                }
+                            ?>
+                            <tr>
+                                <td><?php  echo $tupla['nombre'];?></td>
+                                <td><?php  echo $tupla['edad'];?></td>
+                                <td><?php  echo $tupla['grupo'];?></td>
+                                <td><?php  echo $carreraNombre;?></td>
+                                <td><?php  echo $estado ?></td>
+                                <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idAlumno']; ?>">Cambiar Estado</a></td>
+                                
+                                <td><a href="<?php echo $_SERVER['PHP_SELF'] . '?idEditar=' . $tupla['idAlumno'] . '&idCarrera=' . $tupla['idCarrera']; ?>">Editar</a></td>
+            
+                            </tr>
+                            <?php
+                               
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </form>
-    <br></br>
-
-    <table  class="table table-primary table-striped table-hover">
-        <tr>
-            <th>Nombre</th>
-            <th>Edad</th>
-            <th>Grupo</th>
-            <th>Carrera</th>
-            <th>Estado</th>
-            <th colspan=2 >Acción:</th>
-        </tr>
-        <?php
-        if($datos->num_rows > 0){
-            while($tupla = $datos->fetch_assoc()){
-                $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
-                $carreraNombre = ""; // Variable para almacenar el nombre de la carrera
-                // Obtener el nombre de la carrera asociada al ID
-                $carreras = $objAlumno->listar('carrera');
-                while ($carrera = $carreras->fetch_assoc()) {
-                    if ($carrera['idCarrera'] == $tupla['idCarrera']) {
-                        $carreraNombre = $carrera['nomCarrera'];
-                        break; // Salir del bucle una vez que se ha encontrado el nombre
-                    }
-                }
-                ?>
-                <tr>
-                    <td><?php  echo $tupla['nombre'];?></td>
-                    <td><?php  echo $tupla['edad'];?></td>
-                    <td><?php  echo $tupla['grupo'];?></td>
-                    <td><?php  echo $carreraNombre;?></td>
-                    <td><?php  echo $estado ?></td>
-                    <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idAlumno']; ?>">Cambiar Estado</a></td>
-                    
-                    <td><a href="<?php echo $_SERVER['PHP_SELF'] . '?idEditar=' . $tupla['idAlumno'] . '&idCarrera=' . $tupla['idCarrera']; ?>">Editar</a></td>
-
-                </tr>
-                <?php
-            }
-        }
-        ?>
-    </table>
+    </div>
 </div>
+  
+
 </body>
 </html>
