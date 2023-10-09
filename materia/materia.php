@@ -83,6 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <div class="mt-3"></div>
+        <h3 style="font-size: 16px; font-weight: bold;text-align: center">Registro de materias</h3>
+<div class="mt-3"></div>
 <div class="container">
 <div class="row justify-content-center">
     <div class="col-md-6 mt-3">

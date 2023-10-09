@@ -22,3 +22,11 @@
     width: 300px;
     float: left;
   }
+
+h3 {
+  font-size: 16px; /* Tamaño de fuente */
+  font-weight: bold; /* Negrita */
+  text-align: center; /* Alineación al centro */
+  /* Otros estilos que desees aplicar */
+}
+/* Estilo para h3 */

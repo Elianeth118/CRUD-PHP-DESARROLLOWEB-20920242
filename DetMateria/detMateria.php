@@ -1,72 +1,126 @@
-
 <?php
 require_once('../CONEXION.php');
-require_once('../index.html');
+require_once('../Docente/claseDocente.php');
+require_once('../materia/claseMateria.php');
 require_once('claseDetMat.php');
+require_once('index.html');
+
 
 $conecta = new conexion('localhost', 'root', '', 'itvo2');
 $conecta->conectar();
-$objDetMateria=new detMateria($conecta->get_conn());
+$objdetMateria = new detMateria($conecta->get_conn());
 
+$datos = $objdetMateria->listar('detMateria');
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $idDocente = $_POST["idDocente"];
+    $idMateria = $_POST["idMateria"];
+
+    $objdetMateria->asignarMateria($idDocente, $idMateria);
+}
+$datos = $objdetMateria->listar('detMateria');
 ?>
 
-
-<!DOCTYPE html>
 <html>
 <head>
-    <title>Formulario de Asignación de Materias</title>
+    <title>Asignación de Materias a Docentes</title>
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css.css">
+  
 </head>
 <body>
-    <h1>Asignación de Materias a Docentes</h1>
-    
-    <!-- Formulario para seleccionar docente y materia -->
-    <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post">
-                    <label for="Carrera">Carrera:</label>
-                    <select name="idCarrera" required class="form-control">
-                        <option value="">Seleccione una carrera</option>
-                        <?php
-                        $carreras = $objAlumno->listar('carrera');
-                        while ($carrera = $carreras->fetch_assoc()) {
-                            $selected = ($carrera['idCarrera'] == $idCarreraEditar) ? "selected" : "";
-                            echo "<option value='{$carrera['idCarrera']}' $selected>{$carrera['nomCarrera']}</option>";
-                        }
-                        ?>
-                    </select>
-        <label for="materia">Seleccione una Materia:</label>
-        <select name="materia" id="materia">
+<div class="mt-3"></div>
+        <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignación de Materias a Docentes</h3>
+    <div class="row justify-content-center">
+    <div class="col-md-6 mt-3">
+    <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+    <div class="form-group">
+        <label for="Docente">Docente:</label>
+        <select name="idDocente" required class="form-control">
+            <option value="">Seleccione un Docente</option>
             <?php
-                // Aquí deberías consultar tu base de datos para obtener la lista de materias
-                // y llenar las opciones del select con sus nombres y IDs
-                // Esto es solo un ejemplo estático
-                echo '<option value="1">Materia 1</option>';
-                echo '<option value="2">Materia 2</option>';
-                echo '<option value="3">Materia 3</option>';
+            $docentes = $objdetMateria->listar('docente');
+            while ($docente= $docentes->fetch_assoc()) {
+                $selected = ($docente['idDocente'] == $idDocente) ? "selected" : "";
+                echo "<option value='{$docente['idDocente']}' $selected>{$docente['nomDocente']}</option>";
+            }
             ?>
         </select>
-
-        <input type="submit" value="Asignar Materia">
-    </form>
-
-    <!-- Tabla para mostrar los datos de asignación -->
-    <h2>Asignaciones Actuales</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID Asignación</th>
-                <th>Docente</th>
-                <th>Materia</th>
-            </tr>
-        </thead>
-        <tbody>
+    </div>
+    <div class="form-group">
+        <label for="Materia">Materia:</label>
+        <select name="idMateria" required class="form-control">
+            <option value="">Seleccione una Materia</option>
             <?php
-                // Aquí deberías consultar tu base de datos para obtener las asignaciones actuales
-                // y mostrarlas en la tabla
-                // Esto es solo un ejemplo estático
-                echo '<tr><td>1</td><td>Docente 1</td><td>Materia 1</td></tr>';
-                echo '<tr><td>2</td><td>Docente 2</td><td>Materia 2</td></tr>';
-                echo '<tr><td>3</td><td>Docente 3</td><td>Materia 3</td></tr>';
+            $materias = $objdetMateria->listar('materia');
+            while ($materia= $materias->fetch_assoc()) {
+                $selected = ($materia['idMateria'] == $idMateria) ? "selected" : "";
+                echo "<option value='{$materia['idMateria']}' $selected>{$materia['nomMateria']}</option>";
+            }
             ?>
-        </tbody>
-    </table>
+        </select>
+    </div>
+    <div class="form-group text-center mt-3">
+    <input type="submit" value="Asignar Materia" class="btn btn-outline-primary">
+        </div>
+</form>
+<div class="mt-3"></div>
+        </div>
+    </div>
+</div>
+<br>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Docente</th>
+                            <th>Materia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+    <?php
+    if ($datos->num_rows > 0) {
+        while ($tupla = $datos->fetch_assoc()) {
+            $docenteNombre = ""; // Variable para almacenar el nombre del docente
+            $materiaNombre = ""; // Variable para almacenar el nombre de la materia
+
+            // Obtener el nombre del docente asociado al ID
+            $docentes = $objdetMateria->listar('docente');
+            while ($docente = $docentes->fetch_assoc()) {
+                if ($docente['idDocente'] == $tupla['idDocente']) {
+                    $docenteNombre = $docente['nomDocente'];
+                    break;
+                }
+            }
+
+            // Obtener el nombre de la materia asociada al ID
+            $materias = $objdetMateria->listar('materia');
+            while ($materia = $materias->fetch_assoc()) {
+                if ($materia['idMateria'] == $tupla['idMateria']) {
+                    $materiaNombre = $materia['nomMateria'];
+                    break;
+                }
+            }
+            ?>
+            <tr>
+                <td><?php echo $docenteNombre; ?></td>
+                <td><?php echo $materiaNombre; ?></td>
+              
+            </tr>
+            <?php
+        }
+    }
+    ?>
+</tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
