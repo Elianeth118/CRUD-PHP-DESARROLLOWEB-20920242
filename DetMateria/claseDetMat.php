@@ -46,26 +46,7 @@ class detMateria{
         
           
         }
-        function obtenerNombreDocente($objdetMateria, $idDocente) {
-            $docentes = $objdetMateria->listar('docente');
-            while ($docente = $docentes->fetch_assoc()) {
-                if ($docente['idDocente'] == $idDocente) {
-                    return $docente['nomDocente'];
-                }
-            }
-            return 'Docente no encontrado'; // Puedes personalizar el mensaje si no se encuentra el docente
-        }
-        
-        // Función para obtener el nombre de la materia por su ID
-        function obtenerNombreMateria($objdetMateria, $idMateria) {
-            $materias = $objdetMateria->listar('materia');
-            while ($materia = $materias->fetch_assoc()) {
-                if ($materia['idMateria'] == $idMateria) {
-                    return $materia['nomMateria'];
-                }
-            }
-            return 'Materia no encontrada'; // Puedes personalizar el mensaje si no se encuentra la materia
-        }
+  
     }
 
 
