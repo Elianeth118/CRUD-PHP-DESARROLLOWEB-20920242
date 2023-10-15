@@ -18,6 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $objdetMateria->asignarMateria($idDocente, $idMateria);
 }
+// Cambiar estado (activo o inactivo)
+if (isset($_GET["cambiarEstado"]) && is_numeric($_GET["cambiarEstado"])) {
+    $idCambiarEstado = $_GET["cambiarEstado"];
+    
+    if ($objdetMateria->cambiarEstado('detmateria', $idCambiarEstado)) {
+        //echo "Estado de la materia actualizado con éxito.";
+    } else {
+        //echo "Error al actualizar el estado de la materia";
+    }
+    
+$datos = $objdetMateria->listar('detMateria');
+
+}
 $datos = $objdetMateria->listar('detMateria');
 ?>
 
@@ -35,6 +48,7 @@ $datos = $objdetMateria->listar('detMateria');
     <div class="row justify-content-center">
     <div class="col-md-6 mt-3">
     <form action="<?php echo $_SERVER['PHP_SELF']?>" method="POST">
+    <input type="hidden" name="idEditar" value="<?php echo isset($_GET['idEditar']) ? $_GET['idEditar'] : ''; ?>">
     <div class="form-group">
         <label for="Docente">Docente:</label>
         <select name="idDocente" required class="form-control">
@@ -78,12 +92,15 @@ $datos = $objdetMateria->listar('detMateria');
                         <tr>
                             <th>Docente</th>
                             <th>Materia</th>
+                            <th>Estado</th>
+                            <th colspan=2>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
     <?php
     if ($datos->num_rows > 0) {
         while ($tupla = $datos->fetch_assoc()) {
+            $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
             $docenteNombre = ""; // Variable para almacenar el nombre del docente
             $materiaNombre = ""; // Variable para almacenar el nombre de la materia
 
@@ -108,6 +125,11 @@ $datos = $objdetMateria->listar('detMateria');
             <tr>
                 <td><?php echo $docenteNombre; ?></td>
                 <td><?php echo $materiaNombre; ?></td>
+                <td><?php  echo $estado ?></td>
+
+                <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetMateria']; ?>">Cambiar Estado</a></td>
+               
+
               
             </tr>
             <?php

@@ -12,7 +12,7 @@ $conecta = new conexion('localhost', 'root', '', 'itvo2');
 $conecta->conectar();
 $objdetAlumno = new detAlumno($conecta->get_conn());
 
-$datos = $objdetAlumno->listar('detAlumno');
+$datos = $objdetAlumno->listarPorEstado('detAlumno', 1);;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idAlumno = $_POST["idAlumno"];
@@ -20,7 +20,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $objdetAlumno->asignarMateriaAlumno($idAlumno, $idDetMateria);
 }
-$datos = $objdetAlumno->listar('detAlumno');
+$datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
+
+// Cambiar estado (activo o inactivo)
+if (isset($_GET["cambiarEstado"]) && is_numeric($_GET["cambiarEstado"])) {
+    $idCambiarEstado = $_GET["cambiarEstado"];
+    
+    if ($objdetAlumno->cambiarEstadoDetAlumno('detalumno', $idCambiarEstado)) {
+        //echo "Estado de la materia actualizado con éxito.";
+    } else {
+        //echo "Error al actualizar el estado de la materia";
+    }
+    
+$datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
+}
+
+
 ?>
 
 <html>
@@ -87,12 +102,16 @@ $datos = $objdetAlumno->listar('detAlumno');
                         <tr>
                             <th>Alumno</th>
                             <th>Materia</th>
+                            <th>Estadi</th>
+                            <th colspan=2>Accion</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
     <?php
     if ($datos->num_rows > 0) {
         while ($tupla = $datos->fetch_assoc()) {
+         $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
             $alumnoNombre = ""; // Variable para almacenar el nombre del docente
             $materiaNombre = "";
             $docenteNombre = ""; // Variable para almacenar el nombre de la materia
@@ -125,7 +144,7 @@ $datos = $objdetAlumno->listar('detAlumno');
                 // Verificar si se encontró un docente
                 if (isset($docenteNombre)) {
                     // Mostrar el nombre del docente
-                    //echo $docenteNombre;
+                   // echo $docenteNombre;
                 } else {
                     // No se encontró un docente, puedes mostrar un mensaje o dejarlo en blanco
                     echo "No se encontró un docente asociado.";
@@ -137,7 +156,11 @@ $datos = $objdetAlumno->listar('detAlumno');
             <tr>
                 <td><?php echo $alumnoNombre; ?></td>
                 <td><?php echo "$materiaNombre (Docente: $docenteNombre)"; ?></td>
-              
+                <td><?php  echo $estado ?></td>
+                <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetAlumno']; ?>">Cambiar Estado</a></td>
+                
+            
+
             </tr>
             <?php
         }
