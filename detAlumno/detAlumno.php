@@ -34,6 +34,7 @@ if (isset($_GET["cambiarEstado"]) && is_numeric($_GET["cambiarEstado"])) {
     
 $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
 }
+$datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
 
 
 ?>
@@ -44,7 +45,7 @@ $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../css.css">
-  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="mt-3"></div>
@@ -81,8 +82,7 @@ $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
             // Mostrar la carrera y el docente en la opción del menú desplegable
             echo "<option value='{$detMateria['idDetMateria']}'>{$materia['nomMateria']} - {$docente['nomDocente']}</option>";
         }
-        ?>
-            
+        ?>     
         </select>
     </div>
     <div class="form-group text-center mt-3">
@@ -111,7 +111,7 @@ $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
     <?php
     if ($datos->num_rows > 0) {
         while ($tupla = $datos->fetch_assoc()) {
-         $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
+            $estado = ($tupla['estado'] == 1) ? 'Activo' : 'Inactivo';
             $alumnoNombre = ""; // Variable para almacenar el nombre del docente
             $materiaNombre = "";
             $docenteNombre = ""; // Variable para almacenar el nombre de la materia
@@ -126,12 +126,12 @@ $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
             }
 
        // Obtener el nombre de la materia y el docente asociados al ID de detMateria
-       $detMaterias = $objdetAlumno->listar('detMateria');
-       while ($detMateria = $detMaterias->fetch_assoc()) {
-           if ($detMateria['idDetMateria'] == $tupla['idDetMateria']) {
+        $detMaterias = $objdetAlumno->listar('detMateria');
+        while ($detMateria = $detMaterias->fetch_assoc()) {
+            if ($detMateria['idDetMateria'] == $tupla['idDetMateria']) {
                // Obtener el nombre de la materia
-               $materia = $objdetAlumno->obtenerMateriaPorID($detMateria['idMateria']);
-               $materiaNombre = $materia['nomMateria'];
+                $materia = $objdetAlumno->obtenerMateriaPorID($detMateria['idMateria']);
+                $materiaNombre = $materia['nomMateria'];
                 // Obtener el nombre del docente asociado al ID
                 $docentes = $objdetAlumno->listar('docente');
                 while ($docente = $docentes->fetch_assoc()) {
@@ -151,13 +151,12 @@ $datos = $objdetAlumno->listarPorEstado('detAlumno', 1);
                 }
             }
         }
-     
-       ?>
+    ?>
             <tr>
                 <td><?php echo $alumnoNombre; ?></td>
                 <td><?php echo "$materiaNombre (Docente: $docenteNombre)"; ?></td>
                 <td><?php  echo $estado ?></td>
-                <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetAlumno']; ?>">Cambiar Estado</a></td>
+                <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetAlumno']; ?>">Cambiar Estado</a></td>
                 
             
 

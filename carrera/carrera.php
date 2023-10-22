@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 <div class="mt-3"></div>
@@ -124,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <td><?php  echo $tupla['nomCarrera'];?></td>
                     <td><?php  echo $tupla['clave'];?></td>
                     <td><?php  echo $estado ?></td>
-                    <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idCarrera']; ?>">Cambiar Estado</a></td>
-                    <td><a href="<?php echo $_SERVER['PHP_SELF'] . '?idEditar=' . $tupla['idCarrera']; ?>">Editar</a></td>
+                    <td><a  type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idCarrera']; ?>">Eliminar <i class="fa fa-trash"></a></td>
+                    <td><a type="button" class="btn btn-outline-success" href="<?php echo $_SERVER['PHP_SELF'] . '?idEditar=' . $tupla['idCarrera']; ?>">Editar <i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php
             }

@@ -22,7 +22,10 @@
     width: 300px;
     float: left;
   }
+.Encabezado{
+  background-color: rgb(161, 197, 185);
 
+}
 h3 {
   font-size: 16px; /* Tamaño de fuente */
   font-weight: bold; /* Negrita */
@@ -30,3 +33,6 @@ h3 {
   /* Otros estilos que desees aplicar */
 }
 /* Estilo para h3 */
+.sopa{
+  background-color: rgb(62, 62, 225);
+}

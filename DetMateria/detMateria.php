@@ -3,6 +3,7 @@ require_once('../CONEXION.php');
 require_once('../Docente/claseDocente.php');
 require_once('../materia/claseMateria.php');
 require_once('claseDetMat.php');
+
 require_once('index.html');
 
 
@@ -39,8 +40,8 @@ $datos = $objdetMateria->listar('detMateria');
     <title>Asignación de Materias a Docentes</title>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../css.css">
-  
 </head>
 <body>
 <div class="mt-3"></div>
@@ -76,7 +77,8 @@ $datos = $objdetMateria->listar('detMateria');
         </select>
     </div>
     <div class="form-group text-center mt-3">
-    <input type="submit" value="Asignar Materia" class="btn btn-outline-primary">
+    <input type="submit" value="Asignar Materia" class="btn btn-outline-primary"  >
+    
         </div>
 </form>
 <div class="mt-3"></div>
@@ -92,8 +94,8 @@ $datos = $objdetMateria->listar('detMateria');
                         <tr>
                             <th>Docente</th>
                             <th>Materia</th>
-                            <th>Estado</th>
-                            <th colspan=2>Accion</th>
+                            <th>Alumnos</th>
+                            <th colspan=3>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -121,16 +123,17 @@ $datos = $objdetMateria->listar('detMateria');
                     break;
                 }
             }
+            $numero_alumnos = $objdetMateria->contarAlumnosPorDocente($tupla['idDocente'], $tupla['idDetMateria']);
             ?>
             <tr>
                 <td><?php echo $docenteNombre; ?></td>
                 <td><?php echo $materiaNombre; ?></td>
+                <td><?php echo  $numero_alumnos; ?></td>
                 <td><?php  echo $estado ?></td>
 
-                <td><a href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetMateria']; ?>">Cambiar Estado</a></td>
-               
-
-              
+                <td><a type="button" class="btn btn-outline-danger" href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetMateria']; ?>">Eliminar  <i class="fa fa-trash"></i></a></td>
+                <td><a  type="button" class="btn btn-outline-warning" href= "<?php echo '../inscribir.php' .'?id='.$tupla['idDetMateria']; ?>">Inscribir <i class="fa fa-plus"></a></td>
+                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../imprimir.php';?>">Lista  <i class="fa fa-list"></i></a></td>         
             </tr>
             <?php
         }
