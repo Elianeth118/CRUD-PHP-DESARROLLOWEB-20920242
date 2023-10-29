@@ -1,7 +1,6 @@
 <?php
 
 class detMateria{
-    
         private $conn;
         private $idDetMateria;
         private $idDocente;
@@ -77,6 +76,8 @@ class detMateria{
             $resultado=$this ->conn->query($sql);
             return $resultado;
             }
+        
+    
 
             public function contarAlumnosPorDocente($idDocente, $idDetMateria) {
                 $sql = "SELECT COUNT(DA.idAlumno) AS total_alumnos
@@ -94,7 +95,10 @@ class detMateria{
                     return 0;
                 }
             }
-    }
+
+            }
+            
+    
 
 
 

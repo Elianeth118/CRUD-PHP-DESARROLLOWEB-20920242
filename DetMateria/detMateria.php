@@ -20,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $objdetMateria->asignarMateria($idDocente, $idMateria);
 }
 // Cambiar estado (activo o inactivo)
-if (isset($_GET["cambiarEstado"]) && is_numeric($_GET["cambiarEstado"])) {
-    $idCambiarEstado = $_GET["cambiarEstado"];
+if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
+    $idCambiarEstado = $_GET["id"];
     
     if ($objdetMateria->cambiarEstado('detmateria', $idCambiarEstado)) {
         //echo "Estado de la materia actualizado con éxito.";
@@ -95,7 +95,7 @@ $datos = $objdetMateria->listar('detMateria');
                             <th>Docente</th>
                             <th>Materia</th>
                             <th>Alumnos</th>
-                            <th colspan=3>Accion</th>
+                            <th colspan=4>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,11 +129,13 @@ $datos = $objdetMateria->listar('detMateria');
                 <td><?php echo $docenteNombre; ?></td>
                 <td><?php echo $materiaNombre; ?></td>
                 <td><?php echo  $numero_alumnos; ?></td>
-                <td><?php  echo $estado ?></td>
+               
 
-                <td><a type="button" class="btn btn-outline-danger" href="<?php echo $_SERVER['PHP_SELF'] .'?cambiarEstado=' . $tupla['idDetMateria']; ?>">Eliminar  <i class="fa fa-trash"></i></a></td>
+                <td><a type="button" class="btn btn-outline-danger" href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tupla['idDetMateria']; ?>">Eliminar  <i class="fa fa-trash"></i></a></td>
                 <td><a  type="button" class="btn btn-outline-warning" href= "<?php echo '../inscribir.php' .'?id='.$tupla['idDetMateria']; ?>">Inscribir <i class="fa fa-plus"></a></td>
-                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../imprimir.php';?>">Lista  <i class="fa fa-list"></i></a></td>         
+                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../imprimir.php'.'?id='.$tupla['idDetMateria'];?>">Lista  <i class="fa fa-list"></i></a></td>         
+                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../notas.php'.'?id='.$tupla['idDetMateria'];?>">Calificacion  </a></td>         
+            </tr>
             </tr>
             <?php
         }

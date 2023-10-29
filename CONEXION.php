@@ -5,7 +5,6 @@ class conexion{
     private $pass;
     private $basedatos;
     private $conn;
-     
     function __construct($srv,$usr,$pw,$bd){
         $this->servidor=$srv;
         $this->usuario=$usr;

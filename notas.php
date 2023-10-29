@@ -3,12 +3,14 @@ require_once('CONEXION.php');
 require_once('Alumno/claseAlumno.php');
 require_once('detAlumno/claseDetAlumno.php');
 require_once('DetMateria/claseDetMat.php');
+require_once('calificacion/claseCalificacion.php');
 
 $conecta = new conexion('localhost', 'root', '', 'itvo2');
 $conecta->conectar();
 $objdetAlumno = new detAlumno($conecta->get_conn());
 $objdetMateria=new detMateria($conecta->get_conn());
 $objAlumno=new alumno($conecta->get_conn());
+$objCalificacion=new calificacion($conecta->get_conn());
 
 
 
@@ -20,34 +22,45 @@ if(isset($_GET['id'])){
 $datosDetalle=$objdetMateria->mostrarDetalle(' and idDetMateria='.$idDetalle);
 $datosAlumno=$objAlumno->listar('alumno');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $idAlumno = $_POST['idAlumno'];
-    $idDetalle = $_POST['id'];
-
-    $objdetAlumno->asignarMateriaAlumno( $idAlumno, $idDetalle);
-}
-
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
-
+/*-----------------------------------------*/
 if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $idCambiarEstado = $_GET["id"];
     
-    if ($objdetAlumno->cambiarEstadoDetAlumno('detalumno',$idCambiarEstado)) {
-        $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
+    if ($objCalificacion->cambiarEstadoCali('calificacion',$idCambiarEstado)) {
+        $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
         // Estado de detAlumno actualizado con éxito.
     } else {
         // Error al actualizar el estado de detAlumno.
     }
-    $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
+    $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
+}
+
+$calificacion = '';
+$idDetAlumno = '';
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $idDetAlumno = $_POST['idDetAlumno'];
+    $calificacion = $_POST['calificacion'];
+
+    
+    if($objCalificacion->insertarCalificacion($idDetAlumno, $calificacion)) {
+    
+        echo "Calificación insertada con éxito.";
+        echo "$idDetAlumno";
+    } else {
+    
+        echo "Error al insertar la calificación.";
+    }
 }
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
 $datosdetAlum=$objdetAlumno->listar('detalumno');
 $datos = $objdetMateria->listar('detMateria');
+$datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 
 ?>
 <html>
 <head>
-    <title>Matricular alumnos</title>
+    <title>Calificaciones</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="bootstrap/css/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css.css">
@@ -56,7 +69,7 @@ $datos = $objdetMateria->listar('detMateria');
 <body>
 
 <div class="Encabezado">
-<h1>Detalles de inscripción:</h1>
+<h1>Insertar Calificaciones:</h1>
 
 <?php
 if($datosDetalle->num_rows>0) {
@@ -71,25 +84,32 @@ if($datosDetalle->num_rows>0) {
 </div>
 
 <div class="mt-3"></div>
-        <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignación de Materias a Alumno</h3>
+    <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignación de Materias a Alumno</h3>
     <div class="row justify-content-center">
     <div class="col-md-6 mt-3">
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-<div class="form-group">
-        <label for="Alumno">Alumno:</label>
-    <select id="idAlumno" name="idAlumno" required class="form-select">
-    <option value="">Seleccione un alumno</option>
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+    <input type="hidden" name="idDetAlumno" value="<?php echo $idDetAlumno; ?>">
+    <div class="form-group">
+    <label for="Alumno">Alumno:</label>
+    <select id="idDetAlumno" name="idDetAlumno" required class="form-select">
+        <option value="">Seleccione un idDetAlumno</option>
         <?php
-        if($datosAlumno->num_rows>0){
-            while($tuplaA=$datosAlumno->fetch_assoc()){
+        if ($datosdetAlumno->num_rows > 0) {
+            while ($tuplaA = $datosdetAlumno->fetch_assoc()) {
                 ?>
-                <option value="<?php echo $tuplaA['idAlumno']; ?>"><?php echo $tuplaA["nombre"];?></option>
+                <option value="<?php echo $tuplaA['idDetAlumno']; ?>"><?php echo $tuplaA['nombre']; ?></option>
                 <?php
             }
         }
         ?>
     </select>
-    </div>
+</div>
+</div>
+    <div class="form-group">
+    
+                    <label for="calificacion">Calificación:</label>
+                    <input type="text" name="calificacion" required class="form-control" value="<?php echo $calificacion; ?>">
+                </div>
     <input type="hidden" name="id" value="<?php echo $idDetalle; ?>">
     <div class="form-group text-center mt-3">
     <input type="submit" value="Asignar" class="btn btn-outline-primary">
@@ -107,32 +127,28 @@ if($datosDetalle->num_rows>0) {
         <thead class="table-primary">
             <tr>
                             <th>Alumno</th>
-                            <th>Grupo</th>
+                            <th>calificacion</th>
                             <th colspan=2>Accion</th>
                             
                             
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                    <?php
 
-                        if($datosdetAlumno->num_rows>0){
-                            while($tuplaA=$datosdetAlumno->fetch_assoc()){                    
-                                ?>
-                                <tr>
+                if($datosCalificacion->num_rows>0){
+                    while($tuplaA=$datosCalificacion->fetch_assoc()){                    
+                        ?>
+                        <tr>
                 <td><?php echo $tuplaA['nombre']; ?></td>
-                <td><?php echo $tuplaA['grupo']; ?></td>
-                <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
-                <td>
-                <a type="button" class="btn btn-outline-danger" href="notas.php?id=<?php echo $tuplaA['idAlumno']; ?>">
-                    Notas <i class="fa fa-pencil"></i>
-                </a>
-                </td>
-            </tr>
-                <?php
-                            }
-                        }
-                    ?>
+                <td><?php echo $tuplaA['calificacion']; ?></td>
+                            <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idCalificacion']; ?>">Eliminar <i class="fa fa-trash"></i></a></td>
+         
+        </tr>
+        <?php
+    }
+}
+?>
 
             
 

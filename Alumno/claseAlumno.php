@@ -7,6 +7,7 @@ class alumno{
     private $grupo;
     private $estado;
     private $idCarrera;
+    
     function __construct($conn){
         $this->nombre="";
         $this->edad="";
