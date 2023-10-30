@@ -3,7 +3,7 @@ require_once('../CONEXION.php');
 require_once('claseMateria.php');
 include('index.html');
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objMateria=new materia($conecta->get_conn());
 $datos =$objMateria->listar('materia');

@@ -5,7 +5,7 @@ require_once('detAlumno/claseDetAlumno.php');
 require_once('DetMateria/claseDetMat.php');
 require_once('calificacion/claseCalificacion.php');
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objdetAlumno = new detAlumno($conecta->get_conn());
 $objdetMateria=new detMateria($conecta->get_conn());
@@ -23,7 +23,7 @@ $datosDetalle=$objdetMateria->mostrarDetalle(' and idDetMateria='.$idDetalle);
 $datosAlumno=$objAlumno->listar('alumno');
 
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
-/*-----------------------------------------*/
+
 if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     $idCambiarEstado = $_GET["id"];
     

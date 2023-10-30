@@ -7,7 +7,7 @@ require_once('claseDetMat.php');
 require_once('index.html');
 
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objdetMateria = new detMateria($conecta->get_conn());
 

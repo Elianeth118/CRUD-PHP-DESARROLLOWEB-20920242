@@ -4,7 +4,7 @@ require_once('claseAlumno.php');
 require_once('index.html');
 
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objAlumno=new alumno($conecta->get_conn());
 

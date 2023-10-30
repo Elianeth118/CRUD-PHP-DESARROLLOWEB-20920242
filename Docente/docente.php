@@ -3,7 +3,7 @@ require_once('../CONEXION.php');
 require_once('claseDocente.php');
 include('index.html');
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objDocente=new docente($conecta->get_conn());
 $datos = $objDocente->listar('docente');

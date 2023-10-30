@@ -101,9 +101,10 @@ class detAlumno{
                     JOIN detAlumno D ON A.idAlumno=D.idAlumno 
                     JOIN Carrera C ON C.idCarrera=A.idCarrera 
                     LEFT JOIN Calificacion CA ON CA.idDetAlumno = D.idDetAlumno
-                    WHERE D.estado=1 AND A.estado=1 AND D.idDetMateria='".$idDetMateria."'AND CA.estado = 1;;";
+                    WHERE D.estado=1 AND A.estado=1 AND D.idDetMateria='".$idDetMateria."'AND CA.estado = 1;";
             
             $resultado = $this->conn->query($sql);
+           
             if ($resultado !== null && $resultado->num_rows > 0) {
                 return $resultado;
             } else {

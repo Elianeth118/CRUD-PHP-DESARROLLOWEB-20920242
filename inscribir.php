@@ -4,7 +4,7 @@ require_once('Alumno/claseAlumno.php');
 require_once('detAlumno/claseDetAlumno.php');
 require_once('DetMateria/claseDetMat.php');
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objdetAlumno = new detAlumno($conecta->get_conn());
 $objdetMateria=new detMateria($conecta->get_conn());
@@ -124,7 +124,7 @@ if($datosDetalle->num_rows>0) {
                 <td><?php echo $tuplaA['grupo']; ?></td>
                 <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
                 <td>
-                <a type="button" class="btn btn-outline-danger" href="notas.php?id=<?php echo $tuplaA['idAlumno']; ?>">
+                <a type="button" class="btn btn-outline-danger" href="notas.php?id=<?php echo $tuplaA['idDetAlumno']; ?>">
                     Notas <i class="fa fa-pencil"></i>
                 </a>
                 </td>

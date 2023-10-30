@@ -20,7 +20,7 @@ function listar($tabla){
     
     function insertarCalificacion($idDetAlumno, $calificacion) {
         // Verificar si ya existe una calificación para el idDetAlumno
-        $sql_verificacion = "SELECT idCalificacion FROM calificacion WHERE idDetAlumno = ? LIMIT 1";
+        $sql_verificacion = "SELECT idCalificacion FROM calificacion WHERE idDetAlumno = ? AND estado=1";
         $stmt_verificacion = $this->conn->prepare($sql_verificacion);
         $stmt_verificacion->bind_param("i", $idDetAlumno);
         $stmt_verificacion->execute();

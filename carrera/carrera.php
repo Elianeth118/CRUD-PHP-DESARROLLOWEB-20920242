@@ -3,7 +3,7 @@ require_once('../CONEXION.php');
 require_once('claseCarrera.php');
 require_once('index.html');
 
-$conecta = new conexion('localhost', 'root', '', 'itvo2');
+$conecta = new conexion('localhost', 'root', '', 'bditvo');
 $conecta->conectar();
 $objCarrera=new carrera($conecta->get_conn());
 
