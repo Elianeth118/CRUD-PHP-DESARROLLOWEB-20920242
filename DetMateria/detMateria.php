@@ -133,8 +133,9 @@ $datos = $objdetMateria->listar('detMateria');
 
                 <td><a type="button" class="btn btn-outline-danger" href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tupla['idDetMateria']; ?>">Eliminar  <i class="fa fa-trash"></i></a></td>
                 <td><a  type="button" class="btn btn-outline-warning" href= "<?php echo '../inscribir.php' .'?id='.$tupla['idDetMateria']; ?>">Inscribir <i class="fa fa-plus"></a></td>
-                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../imprimir.php'.'?id='.$tupla['idDetMateria'];?>">Lista  <i class="fa fa-list"></i></a></td>         
-                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../notas.php'.'?id='.$tupla['idDetMateria'];?>">Calificacion  </a></td>         
+                <td><a   type="button" class="btn btn-outline-info" href= "<?php echo '../notas.php'.'?id='.$tupla['idDetMateria'];?>">Calificacion <i class="fa fa-check-square"></i>
+ </a></td>         
+                <td><a   type="button" class="btn btn-outline-secondary" href= "<?php echo '../imprimir.php'.'?id='.$tupla['idDetMateria'];?>">Lista <i class="fa fa-print"></i></a></td>            
             </tr>
             </tr>
             <?php

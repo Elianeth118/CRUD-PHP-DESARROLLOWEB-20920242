@@ -54,7 +54,6 @@ $datos = $objdetMateria->listar('detMateria');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 </head>
 <body>
-
 <div class="Encabezado">
 <h1>Detalles de inscripción:</h1>
 
@@ -69,7 +68,6 @@ if($datosDetalle->num_rows>0) {
 }
 ?>
 </div>
-
 <div class="mt-3"></div>
         <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignación de Materias a Alumno</h3>
     <div class="row justify-content-center">
@@ -108,9 +106,7 @@ if($datosDetalle->num_rows>0) {
             <tr>
                             <th>Alumno</th>
                             <th>Grupo</th>
-                            <th colspan=2>Accion</th>
-                            
-                            
+                            <th>Accion</th>  
                         </tr>
                     </thead>
                     <tbody>
@@ -123,11 +119,7 @@ if($datosDetalle->num_rows>0) {
                 <td><?php echo $tuplaA['nombre']; ?></td>
                 <td><?php echo $tuplaA['grupo']; ?></td>
                 <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
-                <td>
-                <a type="button" class="btn btn-outline-danger" href="notas.php?id=<?php echo $tuplaA['idDetAlumno']; ?>">
-                    Notas <i class="fa fa-pencil"></i>
-                </a>
-                </td>
+              
             </tr>
                 <?php
                             }

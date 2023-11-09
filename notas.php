@@ -29,13 +29,15 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     
     if ($objCalificacion->cambiarEstadoCali('calificacion',$idCambiarEstado)) {
         $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
-        // Estado de detAlumno actualizado con éxito.
+        
     } else {
         // Error al actualizar el estado de detAlumno.
+        $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
     }
     $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 }
 
+//Insertar calificación
 $calificacion = '';
 $idDetAlumno = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,8 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     if($objCalificacion->insertarCalificacion($idDetAlumno, $calificacion)) {
     
-        echo "Calificación insertada con éxito.";
-        echo "$idDetAlumno";
     } else {
     
         echo "Error al insertar la calificación.";
@@ -74,7 +74,7 @@ $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle
 <?php
 if($datosDetalle->num_rows>0) {
     while($tuplaD=$datosDetalle->fetch_assoc()) {
-       ?> 
+    ?> 
         <p>Docente: <?php echo $tuplaD['docente']; ?></p>
         <p>Materia: <?php echo $tuplaD['materia'];?></p>
     <?php
@@ -89,10 +89,12 @@ if($datosDetalle->num_rows>0) {
     <div class="col-md-6 mt-3">
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
     <input type="hidden" name="idDetAlumno" value="<?php echo $idDetAlumno; ?>">
+    <input type="hidden" name="idCalificacion" value="<?php echo $tuplaA['idCalificacion']; ?>">
+
     <div class="form-group">
     <label for="Alumno">Alumno:</label>
     <select id="idDetAlumno" name="idDetAlumno" required class="form-select">
-        <option value="">Seleccione un idDetAlumno</option>
+        <option value="">Seleccione un Alumno</option>
         <?php
         if ($datosdetAlumno->num_rows > 0) {
             while ($tuplaA = $datosdetAlumno->fetch_assoc()) {
@@ -104,15 +106,14 @@ if($datosDetalle->num_rows>0) {
         ?>
     </select>
 </div>
-</div>
     <div class="form-group">
-    
-                    <label for="calificacion">Calificación:</label>
-                    <input type="text" name="calificacion" required class="form-control" value="<?php echo $calificacion; ?>">
+        <label for="calificacion">Calificación:</label>
+                    <input type="text" name="calificacion" required class="form-control" value="<?php echo isset($tuplaA['calificacion']) ? $tuplaA['calificacion'] : ''; ?>">
                 </div>
     <input type="hidden" name="id" value="<?php echo $idDetalle; ?>">
     <div class="form-group text-center mt-3">
     <input type="submit" value="Asignar" class="btn btn-outline-primary">
+    </div>
     </div>
 </form>
 <div class="mt-3"></div>
@@ -129,43 +130,31 @@ if($datosDetalle->num_rows>0) {
                             <th>Alumno</th>
                             <th>calificacion</th>
                             <th colspan=2>Accion</th>
-                            
-                            
                         </tr>
                     </thead>
                     <tbody>
                     <?php
-
-                if($datosCalificacion->num_rows>0){
-                    while($tuplaA=$datosCalificacion->fetch_assoc()){                    
-                        ?>
-                        <tr>
-                <td><?php echo $tuplaA['nombre']; ?></td>
-                <td><?php echo $tuplaA['calificacion']; ?></td>
-                            <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idCalificacion']; ?>">Eliminar <i class="fa fa-trash"></i></a></td>
-         
+if ($datosCalificacion && $datosCalificacion->num_rows > 0) {
+    while ($tuplaA = $datosCalificacion->fetch_assoc()) {
+        ?>
+        <tr>
+            <td><?php echo $tuplaA['nombre']; ?></td>
+            <td><?php echo $tuplaA['calificacion']; ?></td>
+            <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idCalificacion']; ?>">Eliminar <i class="fa fa-trash"></i></a></td>
         </tr>
         <?php
     }
+} else {
+    // Manejar el caso en el que no hay resultados.
+    echo "No hay datos de calificación disponibles.";
+    $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 }
 ?>
-
-            
-
 </tbody>
-
-
                 </table>
-
-
-
-    
                 </div>
         </div>
     </div>
-
-   
-
     <div class="form-group text-center mt-3">
     <button  class="btn btn-outline-primary"  onclick="window.location.href='detMateria/detMateria.php'" > Regresar</button>
 

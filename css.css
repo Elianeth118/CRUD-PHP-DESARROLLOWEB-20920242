@@ -33,3 +33,7 @@ h3 {
   /* Otros estilos que desees aplicar */
 }
 /* Estilo para h3 */
+body {
+  background-image: url('https://www.voaxaca.tecnm.mx/wp-content/uploads/2020/05/itvo.ico');
+  background-size: cover;
+}

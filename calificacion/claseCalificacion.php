@@ -47,11 +47,9 @@ function listar($tabla){
     }
     
 
- function editar($tabla, $idAlumno, $nombre, $edad, $grupo, $idCarrera) {
-        $nombre = $this->conn->real_escape_string($nombre);
-        $edad = $this->conn->real_escape_string($edad);
-        $grupo = $this->conn->real_escape_string($grupo);
-        $idCarrera = $this->conn->real_escape_string($idCarrera);
+ function editar($tabla, $idAlumno, $calificacion, $idCalificacion) {
+        $calificacion = $this->conn->real_escape_string($calificacion);
+        $idAlumno= $this->conn->real_escape_string($idAlumno);
     
         $sql = 'UPDATE ' . $tabla . ' SET calificacion= "' . $calificacion . '", idAlumno = "' . $idAlumno . '" WHERE idAlumno = ' . $idAlumno;
     
