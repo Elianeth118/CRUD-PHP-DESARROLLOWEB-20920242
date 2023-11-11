@@ -104,9 +104,9 @@ if($datosDetalle->num_rows>0) {
 <table class="table table-sm table-bordered">
         <thead class="table-primary">
             <tr>
-                            <th>Alumno</th>
-                            <th>Grupo</th>
-                            <th>Accion</th>  
+                            <th class="fond">Alumno</th>
+                            <th class="fond">Grupo</th>
+                            <th class="fond">Accion</th>  
                         </tr>
                     </thead>
                     <tbody>

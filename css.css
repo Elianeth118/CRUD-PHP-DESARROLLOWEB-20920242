@@ -23,7 +23,8 @@
     float: left;
   }
 .Encabezado{
-  background-color: rgb(161, 197, 185);
+  background-color:#93C6E7;
+  padding: 20px;
 
 }
 h3 {
@@ -34,6 +35,12 @@ h3 {
 }
 /* Estilo para h3 */
 body {
-  background-image: url('https://www.voaxaca.tecnm.mx/wp-content/uploads/2020/05/itvo.ico');
+  /*background-image: url('fondo.jpg');*/
+  background-color:#B9F3FC;
+
   background-size: cover;
+}
+th.fond{
+  background-color: #FEDEFF;
+  text-align: center;
 }

@@ -83,6 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="../bootstrap/css/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
@@ -134,12 +135,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <table class="table table-sm table-bordered">
                     <thead class="table-primary">
                         <tr>
-                            <th>Nombre</th>
-                            <th>Edad</th>
-                            <th>Grupo</th>
-                            <th>Carrera</th>
-                            <th>Estado</th>
-                            <th colspan="2">Acción</th>
+                            <th class="fond">Nombre</th>
+                            <th class="fond">Edad</th>
+                            <th  class="fond">Grupo</th>
+                            <th class="fond">Carrera</th>
+                            <th class="fond">Estado</th>
+                            <th class="fond" colspan="2">Acción</th>
                         </tr>
                     </thead>
                     <tbody>

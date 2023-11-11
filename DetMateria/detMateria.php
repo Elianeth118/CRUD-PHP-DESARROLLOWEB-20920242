@@ -92,10 +92,10 @@ $datos = $objdetMateria->listar('detMateria');
                 <table class="table table-sm table-bordered">
                     <thead class="table-primary">
                         <tr>
-                            <th>Docente</th>
-                            <th>Materia</th>
-                            <th>Alumnos</th>
-                            <th colspan=4>Accion</th>
+                            <th class="fond">Docente</th>
+                            <th class="fond">Materia</th>
+                            <th class="fond">Alumnos</th>
+                            <th  class="fond" colspan=4>Accion</th>
                         </tr>
                     </thead>
                     <tbody>
