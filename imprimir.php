@@ -64,7 +64,7 @@ if($datosCalificacion->num_rows > 0){
       $pdf->SetFont('Arial','','12');
         $pdf->Cell(15, 10, $num, 1, 0, 'C');
         
-        $pdf->Cell(75, 10, $tuplaA['nombre'], 1, 0, 'C');
+        $pdf->Cell(75, 10,utf8_decode( $tuplaA['nombre']), 1, 0, 'C');
         $pdf->Cell(75, 10, $tuplaA['nomCarrera'], 1, 0, 'C');
         $pdf->Cell(15, 10, $tuplaA['calificacion'], 1, 0, 'C'); 
 

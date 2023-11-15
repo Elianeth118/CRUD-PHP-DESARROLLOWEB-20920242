@@ -23,20 +23,18 @@ $datosDetalle=$objdetMateria->mostrarDetalle(' and idDetMateria='.$idDetalle);
 $datosAlumno=$objAlumno->listar('alumno');
 
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
-
-if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
-    $idCambiarEstado = $_GET["id"];
+//Cambiar el estado
+if (isset($_GET["IdEliminar"]) && is_numeric($_GET["IdEliminar"])) {
+    $idCambiarEstado = $_GET["IdEliminar"];
     
     if ($objCalificacion->cambiarEstadoCali('calificacion',$idCambiarEstado)) {
         $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
-        
     } else {
         // Error al actualizar el estado de detAlumno.
-        $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
+        
     }
     $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 }
-
 //Insertar calificación
 $calificacion = '';
 $idDetAlumno = '';
@@ -46,15 +44,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
     if($objCalificacion->insertarCalificacion($idDetAlumno, $calificacion)) {
-    
+        $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
     } else {
     
         echo "Error al insertar la calificación.";
     }
+    $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
+
 }
-$datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
-$datosdetAlum=$objdetAlumno->listar('detalumno');
-$datos = $objdetMateria->listar('detMateria');
+
 $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 
 ?>
@@ -84,7 +82,7 @@ if($datosDetalle->num_rows>0) {
 </div>
 
 <div class="mt-3"></div>
-    <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignación de Materias a Alumno</h3>
+    <h3 style="font-size: 16px; font-weight: bold;text-align: center">Asignar calificaciones:</h3>
     <div class="row justify-content-center">
     <div class="col-md-6 mt-3">
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
@@ -129,6 +127,7 @@ if($datosDetalle->num_rows>0) {
             <tr>
                             <th class="fond">Alumno</th>
                             <th class="fond">Calificacion</th>
+                            <th  class="fond">Carrera</th>
                             <th class="fond" >Accion</th>
                         </tr>
                     </thead>
@@ -140,14 +139,14 @@ if ($datosCalificacion && $datosCalificacion->num_rows > 0) {
         <tr>
             <td><?php echo $tuplaA['nombre']; ?></td>
             <td><?php echo $tuplaA['calificacion']; ?></td>
-            <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idCalificacion']; ?>">Eliminar <i class="fa fa-trash"></i></a></td>
+              <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id='.$idDetalle.'&IdEliminar=' .  $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
+              
         </tr>
         <?php
     }
 } else {
     // Manejar el caso en el que no hay resultados.
     echo "No hay datos de calificación disponibles.";
-    $datosCalificacion=$objdetAlumno->mostrarDetalleAlumnoConCalificacion($idDetalle);
 }
 ?>
 </tbody>
@@ -157,7 +156,6 @@ if ($datosCalificacion && $datosCalificacion->num_rows > 0) {
     </div>
     <div class="form-group text-center mt-3">
     <button  class="btn btn-outline-primary"  onclick="window.location.href='detMateria/detMateria.php'" > Regresar</button>
-
     </div>
 </body>
 </html>

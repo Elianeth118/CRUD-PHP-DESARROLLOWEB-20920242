@@ -28,21 +28,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
-
-if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
-    $idCambiarEstado = $_GET["id"];
+//Cambiar estado
+if (isset($_GET["IdEliminar"]) && is_numeric($_GET["IdEliminar"])) {
+    $idCambiarEstado = $_GET["IdEliminar"];
     
     if ($objdetAlumno->cambiarEstadoDetAlumno('detalumno',$idCambiarEstado)) {
-        $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
+      
         // Estado de detAlumno actualizado con éxito.
     } else {
         // Error al actualizar el estado de detAlumno.
     }
     $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
+    $datosAlumno=$objAlumno->listar('alumno');
 }
 $datosdetAlumno=$objdetAlumno->mostrarDetalleAlumno($idDetalle);
 $datosdetAlum=$objdetAlumno->listar('detalumno');
 $datos = $objdetMateria->listar('detMateria');
+$datosAlumno=$objAlumno->listar('alumno');
 
 ?>
 <html>
@@ -112,36 +114,26 @@ if($datosDetalle->num_rows>0) {
                     <tbody>
                         <?php
 
-                        if($datosdetAlumno->num_rows>0){
+                        if($datosdetAlumno && $datosdetAlumno->num_rows>0){
                             while($tuplaA=$datosdetAlumno->fetch_assoc()){                    
                                 ?>
                                 <tr>
                 <td><?php echo $tuplaA['nombre']; ?></td>
                 <td><?php echo $tuplaA['grupo']; ?></td>
-                <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id=' . $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
-              
+                <td><a type="button" class="btn btn-outline-danger"  href="<?php echo $_SERVER['PHP_SELF'] .'?id='.$idDetalle.'&IdEliminar=' .  $tuplaA['idDetAlumno']; ?>">Eliminar <i class="fa fa-trash"></a></td>
             </tr>
                 <?php
                             }
-                        }
+                      } else {
+                        // Manejar el caso en el que no hay resultados.
+                        echo "No hay datos de calificación disponibles.";
+                    }
                     ?>
-
-            
-
 </tbody>
-
-
                 </table>
-
-
-
-    
                 </div>
         </div>
     </div>
-
-   
-
     <div class="form-group text-center mt-3">
     <button  class="btn btn-outline-primary"  onclick="window.location.href='detMateria/detMateria.php'" > Regresar</button>
 

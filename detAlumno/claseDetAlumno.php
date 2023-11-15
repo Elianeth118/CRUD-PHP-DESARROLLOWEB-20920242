@@ -95,16 +95,16 @@ class detAlumno{
                 return null; // Retorna null si no se encuentran resultados
             }
         }
-        function mostrarDetalleAlumnoConCalificacion($idDetMateria){
+        function mostrarDetalleAlumnoConCalificacion($idDetMateria, $condicion = null) {
             $sql = "SELECT D.idDetMateria, A.nombre, A.grupo, A.idAlumno, D.idDetAlumno, C.nomCarrera, A.idCarrera AS carrera, CA.calificacion, CA.idCalificacion
                     FROM alumno A 
                     JOIN detAlumno D ON A.idAlumno=D.idAlumno 
                     JOIN Carrera C ON C.idCarrera=A.idCarrera 
                     LEFT JOIN Calificacion CA ON CA.idDetAlumno = D.idDetAlumno
-                    WHERE D.estado=1 AND A.estado=1 AND D.idDetMateria='".$idDetMateria."'AND CA.estado = 1;";
-            
+                    WHERE D.estado=1 AND A.estado=1 AND D.idDetMateria='" . $idDetMateria . "' AND CA.estado = 1" . $condicion . ";";
+        
             $resultado = $this->conn->query($sql);
-           
+        
             if ($resultado !== null && $resultado->num_rows > 0) {
                 return $resultado;
             } else {
